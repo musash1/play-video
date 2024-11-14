@@ -17,22 +17,32 @@ pub fn main() !void {
     }
     defer glfw.terminate();
 
-    const window = glfw.Window.create(1280, 720, "GLFW/OpenGL example using zm", null, null, .{});
-    defer window.?.destroy();
+    const window = glfw.Window.create(1280, 720, "play a Video", null, null, .{});
+    const window_real = window.?;
+    defer window_real.destroy();
 
     glfw.makeContextCurrent(window);
 
     if (!gl_procs.init(glfw.getProcAddress)) {
         @panic("could not get glproc");
     }
+
     gl.makeProcTableCurrent(&gl_procs);
 
-    window.?.setSizeCallback(glfwWindowSizeCallback);
+    window_real.setSizeCallback(glfwWindowSizeCallback);
 
     glfw.swapInterval(1);
 
-    while (!window.?.shouldClose()) {
-        window.?.swapBuffers();
+    const points: [9]f64 = .{ 0.0, 0.5, 0.0, 0.5, -0.5, 0.0, -0.5, -0.5, 0.0 };
+    _ = points; // autofix
+
+    while (!window_real.shouldClose()) {
+        window_real.swapBuffers();
+
+        if (window_real.getKey(glfw.Key.escape) == glfw.Action.press) {
+            window_real.destroy();
+        }
+
         glfw.pollEvents();
     }
 }
