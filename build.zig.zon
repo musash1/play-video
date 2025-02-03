@@ -1,20 +1,24 @@
 .{
     .name = "play-video",
 
-    .version = "0.0.0",
+    .version = "0.13.0",
 
     .dependencies = .{
         .zm = .{
             .url = "git+https://github.com/griush/zm#cb45317e26100aee505413be717da617f067911e",
             .hash = "12202037109a9936d8a3c19b2c9b4bbd15985e15a43ab01732ef2611bf1b924f5845",
         },
-        .zig_glfw = .{
-            .url = "git+https://github.com/griush/zig-glfw#4086ec77f2180e285a260412fb4f10605dbb1625",
-            .hash = "1220804380562d8b9b9996d6d8aded88ef887310053cd09d0015af7e65778d5b8d30",
-        },
         .zigglgen = .{
             .url = "https://github.com/castholm/zigglgen/releases/download/v0.2.3/zigglgen.tar.gz",
             .hash = "1220f4188a5e1bdbb15fd50e9ea322c0721384eeba9bc077e4179b0b0eeaa7fe4ad9",
+        },
+        .zglfw = .{
+            .url = "git+https://github.com/griush/zglfw#8e160f1db87da13112e506c943887b7b6397a7dd",
+            .hash = "12209c9d905ac2ce03d11684674b5f77a5da204ff42426b199d5a47ffb580d751741",
+        },
+        .@"mach-glfw" = .{
+            .url = "https://pkg.machengine.org/mach-glfw/affdd6ae6f2ac2c3b9162784bdad345c561eeeea.tar.gz",
+            .hash = "122022ea6df16700e521078c20d7d01f894c6f967e6c6ce1ea166426b4fc61667de3",
         },
     },
 

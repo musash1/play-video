@@ -20,12 +20,19 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    exe.linkSystemLibrary("c");
+    exe.linkSystemLibrary("zlib");
+    exe.linkSystemLibrary("avcodec");
+    exe.linkSystemLibrary("avformat");
+    exe.linkSystemLibrary("avutil");
+    exe.linkSystemLibrary("avdevice");
+    exe.linkSystemLibrary("avfilter");
+    exe.linkSystemLibrary("swscale");
+    exe.linkSystemLibrary("drm");
+    exe.linkLibC();
 
     const zm = b.dependency("zm", .{});
     exe.root_module.addImport("zm", zm.module("zm"));
-
-    const glfw_dep = b.dependency("zig_glfw", .{ .target = target, .optimize = optimize });
-    exe.root_module.addImport("glfw", glfw_dep.module("zig-glfw"));
 
     const gl_bindings = @import("zigglgen").generateBindingsModule(b, .{
         .api = .gl,
@@ -33,6 +40,13 @@ pub fn build(b: *std.Build) void {
         .profile = .core,
     });
     exe.root_module.addImport("gl", gl_bindings);
+
+    // Use mach-glfw
+    const glfw_dep = b.dependency("mach-glfw", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    exe.root_module.addImport("mach-glfw", glfw_dep.module("mach-glfw"));
 
     b.installArtifact(exe);
 

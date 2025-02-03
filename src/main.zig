@@ -1,5 +1,5 @@
 const std = @import("std");
-const glfw = @import("glfw");
+const glfw = @import("mach-glfw");
 const gl = @import("gl");
 const zm = @import("zm");
 
@@ -29,6 +29,8 @@ pub fn main() !void {
 
     gl.makeProcTableCurrent(&gl_procs);
 
+    window_real.setDropCallback(dropCallback);
+
     window_real.setSizeCallback(glfwWindowSizeCallback);
 
     glfw.swapInterval(1);
@@ -39,10 +41,48 @@ pub fn main() !void {
     while (!window_real.shouldClose()) {
         window_real.swapBuffers();
 
-        if (window_real.getKey(glfw.Key.escape) == glfw.Action.press) {
+        if (window_real.getKey(glfw.Key.enter) == glfw.Action.press) {
             window_real.destroy();
         }
 
         glfw.pollEvents();
     }
+}
+
+fn dropCallback(window: glfw.Window, paths: [][*:0]const u8) void {
+    _ = window;
+    std.debug.print("dropped {} files:\n", .{paths.len});
+    for (paths, 0..) |path, i| {
+        std.debug.print("{}: {s}\n", .{ i, path });
+    }
+
+    //    var video = try ffmpeg.Video.open(paths[0]);
+    //    defer video.close();
+    //
+    //    const videoWidth = video.width;
+    //    const videoHeight = video.height;
+    //    // const frameDuration = std.time.ns_per_s / video.frame_rate;
+    //
+    //    var texture: u32 = 0;
+    //    gl.GenTextures(1, &texture);
+    //    gl.BindTexture(gl.TEXTURE_2D, texture);
+    //    gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    //    gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    //
+    //    const startTime = std.time.nanoTimestamp();
+    //
+    //    while (!window.shouldClose()) {
+    //        const elapsed = std.time.nanoTimestamp() - startTime;
+    //
+    //        const frame = video.decodeFrame(elapsed);
+    //        if (frame) {
+    //            gl.BindTexture(gl.TEXTURE_2D, texture);
+    //            gl.TexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, videoWidth, videoHeight, gl.RGBA, gl.UNSIGNED_BYTE, frame.data);
+    //        }
+    //
+    //        gl.Clear(gl.COLOR_BUFFER_BIT);
+    //
+    //        window.swapBuffers();
+    //        glfw.pollEvents();
+    //    }
 }
